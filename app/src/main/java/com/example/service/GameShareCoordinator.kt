@@ -18,6 +18,7 @@ package com.example.service
 
 import android.content.Context
 import android.net.wifi.WifiManager
+import android.os.Build
 import android.os.PowerManager
 import com.example.data.ConnectedDevice
 import com.example.data.GameShareUiState
@@ -329,8 +330,15 @@ class GameShareCoordinator(
         runCatching {
             if (wifiLock == null) {
                 val wm = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+                // WIFI_MODE_FULL_LOW_LATENCY exists only on Android 10+; use high-perf mode on 8.x/9.
+                val lockMode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    WifiManager.WIFI_MODE_FULL_LOW_LATENCY
+                } else {
+                    @Suppress("DEPRECATION")
+                    WifiManager.WIFI_MODE_FULL_HIGH_PERF
+                }
                 wifiLock = wm.createWifiLock(
-                    WifiManager.WIFI_MODE_FULL_LOW_LATENCY,
+                    lockMode,
                     "GameShare::LowLatencyWifiLock",
                 ).apply { setReferenceCounted(false) }
             }

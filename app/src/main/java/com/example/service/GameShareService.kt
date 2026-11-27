@@ -23,7 +23,6 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.content.pm.ServiceInfo
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import androidx.core.app.ServiceCompat
@@ -93,7 +92,7 @@ class GameShareService : Service() {
             this,
             NOTIFICATION_ID,
             notification,
-            ServiceInfo.FOREGROUND_SERVICE_TYPE_CONNECTED_DEVICE,
+            FOREGROUND_SERVICE_TYPE_CONNECTED_DEVICE,
         )
 
         if (stateObserverJob == null) {
@@ -196,6 +195,10 @@ class GameShareService : Service() {
         const val ACTION_START = "com.example.action.START_SHARING"
         const val ACTION_STOP = "com.example.action.STOP_SHARING"
         const val ACTION_TOGGLE = "com.example.action.TOGGLE_SHARING"
+
+        // Same value as ServiceInfo.FOREGROUND_SERVICE_TYPE_CONNECTED_DEVICE (API 29+). The constant
+        // is inlined, so we don't load ServiceInfo on Android 8.1, where that class doesn't exist.
+        private const val FOREGROUND_SERVICE_TYPE_CONNECTED_DEVICE = 1 shl 4
 
         private const val CHANNEL_ID = "gameshare_proxy_channel"
         private const val NOTIFICATION_ID = 1080

@@ -66,6 +66,21 @@ jobs:
           echo "STORE_PASSWORD=$STORE_PASS" >> "$GITHUB_ENV"
           echo "KEY_PASSWORD=$KEY_PASS" >> "$GITHUB_ENV"
 
+      - name: Check for APIs newer than minSdk
+        # Lint's NewApi check finds calls to Android APIs that don't exist on the minimum supported
+        # version (Android 8.1 / API 27). Fail the build if it finds any.
+        run: |
+          set -uo pipefail
+          gradle --no-daemon :app:lintRelease || true
+          REPORT=app/build/reports/lint-results-release.xml
+          if [ ! -f "$REPORT" ]; then echo "Lint report not found"; exit 1; fi
+          if grep -q 'id="NewApi"' "$REPORT"; then
+            grep -B2 -A3 'id="NewApi"' "$REPORT" | head -80
+            echo "::error::Code uses APIs newer than minSdk 27"
+            exit 1
+          fi
+          echo "No NewApi problems found."
+
       - name: Build release APK
         run: gradle --no-daemon :app:assembleRelease
 
