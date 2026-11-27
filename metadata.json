@@ -1,0 +1,6 @@
+{
+  "name": "GameShare",
+  "description": "No-root Wi-Fi Direct cellular internet sharing via a local high-performance SOCKS5 TCP and UDP proxy.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
