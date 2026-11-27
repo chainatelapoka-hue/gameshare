@@ -111,6 +111,7 @@ import com.example.data.GameShareUiState
 import com.example.data.ProxySettings
 import com.example.data.SharingStatus
 import com.example.data.TrafficStats
+import com.example.ui.components.WifiQrCode
 import com.example.ui.theme.GameShareTheme
 import com.example.ui.theme.LocalGameShareColors
 import com.example.ui.theme.MonoCodeStyle
@@ -808,6 +809,22 @@ private fun ConnectionInfoCard(
                 }
             }
 
+            val qrSsid = uiState.p2pNetworkName
+            val qrPass = uiState.p2pPassphrase
+            if (uiState.isSharing && qrSsid != null && !qrPass.isNullOrBlank()) {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(6.dp),
+                ) {
+                    Text(
+                        text = "Wi-Fi QR: অন্য ফোনের ক্যামেরায় স্ক্যান করলে এই network-এ যুক্ত হবে",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    WifiQrCode(ssid = qrSsid, passphrase = qrPass)
+                }
+            }
             HorizontalDivider(color = extColors.cardBorder)
 
             // SOCKS5 Host:Port row with Copy button
