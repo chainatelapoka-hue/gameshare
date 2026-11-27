@@ -25,6 +25,11 @@ android {
   // and updating Android apps in AI Studio.
   signingConfigs {
     create("release") {
+      // Sign with all schemes. v1 (JAR) signing is needed by some older installers and OEM
+      // package parsers; v2/v3 are required by modern Android.
+      enableV1Signing = true
+      enableV2Signing = true
+      enableV3Signing = true
       val keystorePath = System.getenv("KEYSTORE_PATH") ?: "${rootDir}/my-upload-key.jks"
       storeFile = file(keystorePath)
       storePassword = System.getenv("STORE_PASSWORD")
