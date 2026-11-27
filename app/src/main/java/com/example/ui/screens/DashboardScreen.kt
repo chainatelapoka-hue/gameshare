@@ -111,7 +111,8 @@ import com.example.data.GameShareUiState
 import com.example.data.ProxySettings
 import com.example.data.SharingStatus
 import com.example.data.TrafficStats
-import com.example.ui.components.WifiQrCode
+import com.example.ui.components.QrCodeImage
+import com.example.ui.components.gameShareJoinPayload
 import com.example.ui.theme.GameShareTheme
 import com.example.ui.theme.LocalGameShareColors
 import com.example.ui.theme.MonoCodeStyle
@@ -818,11 +819,19 @@ private fun ConnectionInfoCard(
                     verticalArrangement = Arrangement.spacedBy(6.dp),
                 ) {
                     Text(
-                        text = "Wi-Fi QR: অন্য ফোনের ক্যামেরায় স্ক্যান করলে এই network-এ যুক্ত হবে",
+                        text = "gameshareX QR: client ফোনে gameshareX খুলে এই QR স্ক্যান করুন",
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
-                    WifiQrCode(ssid = qrSsid, passphrase = qrPass)
+                    QrCodeImage(
+                        payload = gameShareJoinPayload(
+                            ssid = qrSsid,
+                            passphrase = qrPass,
+                            host = uiState.socksHost,
+                            port = uiState.socksPort,
+                            authEnabled = authEnabled,
+                        ),
+                    )
                 }
             }
             HorizontalDivider(color = extColors.cardBorder)

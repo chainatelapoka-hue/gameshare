@@ -19,20 +19,19 @@ import com.google.zxing.common.BitMatrix
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 
 /**
- * Shows a QR code that any phone camera can scan to join the Wi-Fi network. Scanning it joins
- * the network without installing GameShare on the other phone. (An app is still needed to use
- * the SOCKS5 proxy.)
+ * Shows [payload] as a QR code. GameShare uses this for its join code, which the gameshareX app
+ * reads to connect automatically.
  */
 @Composable
-fun WifiQrCode(ssid: String, passphrase: String, modifier: Modifier = Modifier) {
-    val bitmap = remember(ssid, passphrase) {
-        runCatching { buildWifiQrBitmap(wifiQrPayload(ssid, passphrase), QR_SIZE_PX) }.getOrNull()
+fun QrCodeImage(payload: String, modifier: Modifier = Modifier) {
+    val bitmap = remember(payload) {
+        runCatching { buildWifiQrBitmap(payload, QR_SIZE_PX) }.getOrNull()
     }
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         if (bitmap != null) {
             Image(
                 bitmap = bitmap.asImageBitmap(),
-                contentDescription = "Wi-Fi QR code",
+                contentDescription = "Connection QR code",
                 modifier = Modifier.size(200.dp),
             )
         } else {
@@ -41,16 +40,12 @@ fun WifiQrCode(ssid: String, passphrase: String, modifier: Modifier = Modifier) 
     }
 }
 
-/** Standard Wi-Fi join payload, understood by Android and MIUI camera scanners. */
-internal fun wifiQrPayload(ssid: String, passphrase: String): String =
-    "WIFI:T:WPA;S:${escapeWifiField(ssid)};P:${escapeWifiField(passphrase)};;"
-
-private fun escapeWifiField(value: String): String = buildString {
-    for (ch in value) {
-        if (ch == '\\' || ch == ';' || ch == ',' || ch == ':' || ch == '"') append('\\')
-        append(ch)
-    }
-}
+/**
+ * Join payload read by the gameshareX app: `GSX1;S=<ssid>;P=<pass>;H=<host>;O=<port>;A=<0|1>`.
+ * The proxy password is never put in the QR; the client types it in when authentication is on.
+ */
+internal fun gameShareJoinPayload(ssid: String, passphrase: String, host: String, port: Int, authEnabled: Boolean): String =
+    "GSX1;S=$ssid;P=$passphrase;H=$host;O=$port;A=${if (authEnabled) 1 else 0}"
 
 internal fun buildWifiQrBitmap(payload: String, sizePx: Int): Bitmap {
     val hints = mapOf(
