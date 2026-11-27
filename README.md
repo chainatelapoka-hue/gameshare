@@ -25,6 +25,13 @@ It is specifically engineered for **online multiplayer gaming**, **voice chat**,
 
 ---
 
+## Download & User Manual
+
+- **Download the APK:** https://github.com/chainatelapoka-hue/gameshare/releases/latest/download/GameShare.apk
+- **Full user manual (Bangla):** [`docs/USER_MANUAL.md`](docs/USER_MANUAL.md)
+
+---
+
 ## (a) How to Connect an Android Client Device
 
 ### Step 1: Start Sharing on the Host Device
