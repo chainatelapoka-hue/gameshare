@@ -69,6 +69,8 @@ Settings-এ গিয়ে এগুলো বদলাতে পারেন�
 
 **পদ্ধতি B:** Settings → Wi-Fi → Advanced → Wi-Fi Direct থেকে Host ফোনের নামে চাপুন।
 
+**পদ্ধতি C (QR, সবচেয়ে সহজ):** Host ফোনের GameShare-এ Wi-Fi QR code দেখা যাবে। Client ফোনের ক্যামেরা বা Wi-Fi QR scanner দিয়ে সেটা স্ক্যান করুন। Client ফোনে GameShare install করা লাগবে না। তবে ইন্টারনেটের জন্য ৫ নম্বর ধাপের SOCKS5 app-টা লাগবেই।
+
 যুক্ত হলে Client-এর Wi-Fi-তে "Connected" বা "No internet" দেখাতে পারে। এটা স্বাভাবিক, কারণ ইন্টারনেট আসবে SOCKS5 proxy দিয়ে।
 
 ---
